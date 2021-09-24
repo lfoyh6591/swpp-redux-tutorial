@@ -7,10 +7,16 @@ import {connect} from 'react-redux';
 import * as actionTypes from '../../store/action/actionType';
 import { NavLink } from 'react-router-dom';
 import { withRouter } from 'react-router';
+import axios from 'axios';
+import * as actionCreators from '../../store/action/index';
 
 class TodoList extends Component {
   state = {
     selectedTodo: null,
+  }
+
+  componentDidMount(){
+    this.props.onGetAll();
   }
 
   clickTodoHandler = (td) => {
@@ -26,7 +32,7 @@ class TodoList extends Component {
           done={td.done}
           clickDetail={() => this.clickTodoHandler(td)}
           clickDone={() => this.props.onToggleTodo(td.id)}
-          clickDelete={() => this.props.onDeletTodo(td.id)}
+          clickDelete={() => this.props.onDeleteTodo(td.id)}
         />);
     });
 
@@ -57,9 +63,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return{
     onToggleTodo: (id) =>
-      dispatch({ type: actionTypes.TOGGLE_DONE, targetID: id}),
-    onDeletTodo: (id) =>
-      dispatch({ type: actionTypes.DELETE_TODO, targetID: id})
+      dispatch(actionCreators.toggleTodo(id)),
+    onDeleteTodo: (id) =>
+      dispatch(actionCreators.deleteTodo(id)),
+    onGetAll: () => dispatch(actionCreators.getTodos()),
   };
 }
 

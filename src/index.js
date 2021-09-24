@@ -7,7 +7,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
 import todoReducer from './store/reducers/todo';
-
+import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
     td: todoReducer,
@@ -23,7 +23,7 @@ const logger = store => {
         }
     }
 };
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(logger)));
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(logger, thunk)));
 
 ReactDOM.render(
     <Provider store={store}>
